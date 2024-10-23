@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ action }} Vehicle</h2>
+    <form method="post" style="max-width: 1000px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow-y: auto; max-height: 80vh;">
+
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 250px;">
+                <label for="model_year">Model Year:</label>
+                <input type="text" name="model_year" id="model_year" value="{{ vehicle.model_year if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="make">Make:</label>
+                <input type="text" name="make" id="make" value="{{ vehicle.make if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="model">Model:</label>
+                <input type="text" name="model" id="model" value="{{ vehicle.model if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="vehicle_class">Vehicle Class:</label>
+                <input type="text" name="vehicle_class" id="vehicle_class" value="{{ vehicle.vehicle_class if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="engine_size">Engine Size (L):</label>
+                <input type="text" name="engine_size" id="engine_size" value="{{ vehicle.engine_size if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="cylinders">Cylinders:</label>
+                <input type="text" name="cylinders" id="cylinders" value="{{ vehicle.cylinders if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="transmission">Transmission:</label>
+                <input type="text" name="transmission" id="transmission" value="{{ vehicle.transmission if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="fuel_type">Fuel Type:</label>
+                <input type="text" name="fuel_type" id="fuel_type" value="{{ vehicle.fuel_type if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="city_consumption">City Consumption (L/100 km):</label>
+                <input type="text" name="city_consumption" id="city_consumption" value="{{ vehicle.city_consumption if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="highway_consumption">Highway Consumption (L/100 km):</label>
+                <input type="text" name="highway_consumption" id="highway_consumption" value="{{ vehicle.highway_consumption if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="combined_consumption">Combined Consumption (L/100 km):</label>
+                <input type="text" name="combined_consumption" id="combined_consumption" value="{{ vehicle.combined_consumption if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="flex: 1; min-width: 250px;">
+                <label for="co2_emissions">CO2 Emissions (g/km):</label>
+                <input type="text" name="co2_emissions" id="co2_emissions" value="{{ vehicle.co2_emissions if vehicle else '' }}" required 
+                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+
+        <button type="submit" style="padding: 10px 15px; background-color: #35424a; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px;">{{ action }}</button>
+    </form>
+    <a href="{{ url_for('index') }}" style="display: block; margin-top: 20px; color: #35424a; text-decoration: none;">Back to Home</a>
+{% endblock %}

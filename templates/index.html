@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Vehicle List</h2>
+
+    <div style="margin-bottom: 1rem;">
+        <a href="{{ url_for('add_vehicle') }}" style="margin-right: 1rem; padding: 0.5rem 1rem; background-color: #35424a; color: white; text-decoration: none; border-radius: 4px;">Add New Vehicle</a>
+        <a href="{{ url_for('reload_data') }}" style="margin-right: 1rem; padding: 0.5rem 1rem; background-color: #35424a; color: white; text-decoration: none; border-radius: 4px;">Reload Data</a>
+        <a href="{{ url_for('save_data') }}" style="padding: 0.5rem 1rem; background-color: #35424a; color: white; text-decoration: none; border-radius: 4px;">Save Data</a>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <th style="border: 1px solid #ddd; padding: 8px;">Year</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Make</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Model</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Fuel Type</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Vehicle Class</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Engine Size</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Emissions</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Actions</th>
+        </tr>
+        {% for vehicle in vehicles %}
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.model_year }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.make }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.model }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.fuel_type }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.vehicle_class }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.engine_size }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ vehicle.co2_emissions }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">
+                <a href="{{ url_for('edit_vehicle', index=loop.index0) }}" style="margin-right: 0.5rem;">Edit</a>
+                <a href="{{ url_for('delete_vehicle', index=loop.index0) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
