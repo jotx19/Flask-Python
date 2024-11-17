@@ -1,106 +1,114 @@
-# Author: Prabjot Singh
-# This file contains a Flask framework for managing vehicle records, including features to add, edit, delete, 
-# reload, and save vehicles. The application interacts with vehicle data through the VehicleManager class and displays 
-# information via HTML templates.
+# author: prabjot Singh
+# This class is entry point for webapp make server run.
+# Please read the requisites in Documentation to make it work error free.
+# This class has routes and conversion with some debugs.
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from business.vehicle_manager import VehicleManager
+from persistence.vehicleFile import VehicleDBIO
 from models.vehicle import Vehicle
-import os
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-vehicle_manager = VehicleManager('data/my2024-fuel-consumption-ratings.csv')
+app.secret_key = 'your_secret_key_here'  
+
+vehicle_manager = VehicleManager("localhost", "root", "root", "vehicles")
+vehicle_dbio = VehicleDBIO("localhost", "root", "root", "vehicles")
 
 @app.route('/')
 def index():
-    """
-    Renders the homepage displaying the list of all vehicles.
-    """
-    return render_template('index.html', vehicles=vehicle_manager.get_all_vehicles(), name="Prabjot Singh")
+    vehicles = vehicle_manager.get_all_vehicles()
+    return render_template('index.html', vehicles=vehicles)
 
-#  These are the routes for application follows html
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add_vehicle', methods=['GET', 'POST'])
 def add_vehicle():
-    """
-    Handles the addition of a new vehicle record.
-    """
     if request.method == 'POST':
-        new_vehicle = Vehicle(
-            model_year=request.form['model_year'],
-            make=request.form['make'],
-            model=request.form['model'],
-            vehicle_class=request.form['vehicle_class'],
-            engine_size=request.form['engine_size'],
-            cylinders=request.form['cylinders'],
-            transmission=request.form['transmission'],
-            fuel_type=request.form['fuel_type'],
-            city_consumption=request.form['city_consumption'],
-            highway_consumption=request.form['highway_consumption'],
-            combined_consumption=request.form['combined_consumption'],
-            co2_emissions=request.form['co2_emissions']
-        )
-        vehicle_manager.add_vehicle(new_vehicle)
-        flash('Vehicle added successfully!')
+        try:
+            # Capture the form data and ensure proper conversion of numeric values
+            vehicle = Vehicle(
+                model_year=request.form['model_year'],
+                make=request.form['make'],
+                model=request.form['model'],
+                vehicle_class=request.form['vehicle_class'],
+                engine_size=float(request.form['engine_size']),  
+                fuel_type=request.form['fuel_type'],
+                city_consumption=float(request.form['city_consumption']),  
+                highway_consumption=float(request.form['highway_consumption']),  
+                combined_consumption=float(request.form['combined_consumption']),  
+                co2_emissions=int(request.form['co2_emissions']),  
+                cylinders=int(request.form['cylinders']),  
+                transmission=request.form['transmission'],
+                co2_rating=request.form['co2_rating'],
+                smog_rating=request.form['smog_rating'] 
+            )
+            
+            vehicle_manager.add_vehicle(vehicle)
+            flash('Vehicle added successfully!', 'success')
+        except Exception as e:
+            flash(f'Error adding vehicle: {e}', 'danger')
         return redirect(url_for('index'))
-    return render_template('vehicle_form.html', action='Add')
+    
+    return render_template('add_vehicle.html', action="Add", vehicle=None)
 
-#  These are the routes for application follows html
-@app.route('/edit/<int:index>', methods=['GET', 'POST'])
-def edit_vehicle(index):
-    """
-    Handles editing an existing vehicle record.
-    Renders the vehicle_form.html template on GET, or redirects to the homepage on successful POST.
-    """
-    if request.method == 'POST':
-        updated_vehicle = Vehicle(
-            model_year=request.form['model_year'],
-            make=request.form['make'],
-            model=request.form['model'],
-            vehicle_class=request.form['vehicle_class'],
-            engine_size=request.form['engine_size'],
-            cylinders=request.form['cylinders'],
-            transmission=request.form['transmission'],
-            fuel_type=request.form['fuel_type'],
-            city_consumption=request.form['city_consumption'],
-            highway_consumption=request.form['highway_consumption'],
-            combined_consumption=request.form['combined_consumption'],
-            co2_emissions=request.form['co2_emissions']
-        )
-        vehicle_manager.edit_vehicle(index, updated_vehicle)
-        flash('Vehicle updated successfully!')
-        return redirect(url_for('index'))
-    vehicle = vehicle_manager.get_vehicle(index)
-    return render_template('vehicle_form.html', vehicle=vehicle, action='Edit', index=index)
-#  These are the routes for application follows html
 
-@app.route('/delete/<int:index>')
-def delete_vehicle(index):
-    """
-    Deletes a vehicle record from the list.
-    """
-    vehicle_manager.delete_vehicle(index)
-    flash('Vehicle deleted successfully!')
-    return redirect(url_for('index'))
 
-@app.route('/reload')
+@app.route('/reload_data')
 def reload_data():
-    """
-    Reloads the vehicle data from the CSV file, replacing the in-memory data.
-    """
-    vehicle_manager.reload_data()
-    flash('Data reloaded successfully!')
+    vehicle_manager.reload_vehicles()  
+    vehicles = vehicle_manager.get_all_vehicles()  
+    flash('Data reloaded successfully! || Sometimes it wont reload please restart the app new tab', 'success')
+    return render_template('index.html', vehicles=vehicles) 
+
+@app.route('/import_csv', methods=['POST'])
+def import_csv():
+    try:
+        csv_file_path = 'data/my2024-fuel-consumption-ratings.csv'
+        vehicle_dbio.load_csv_to_db(csv_file_path)
+        flash('CSV data imported successfully!', 'success')
+    except Exception as e:
+        flash(f'Error importing CSV: {e}', 'danger')
+    
     return redirect(url_for('index'))
-#  These are the routes for application follows html
+
+@app.route('/edit_vehicle/<int:vehicle_id>', methods=['GET', 'POST'])
+def edit_vehicle(vehicle_id):
+    vehicle = vehicle_manager.get_vehicle_by_id(vehicle_id)
+    if not vehicle:
+        flash('404! Vehicle dissapered', 'danger')
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        try:
+            # Update the vehicle object with new form data
+            vehicle.model_year = int(request.form['model_year'])
+            vehicle.make = request.form['make']
+            vehicle.model = request.form['model']
+            vehicle.vehicle_class = request.form['vehicle_class']
+            vehicle.engine_size = float(request.form['engine_size'])
+            vehicle.fuel_type = request.form['fuel_type']
+            vehicle.city_consumption = float(request.form['city_consumption'])
+            vehicle.highway_consumption = float(request.form['highway_consumption'])
+            vehicle.combined_consumption = float(request.form['combined_consumption'])
+            vehicle.co2_emissions = int(request.form['co2_emissions'])
+            vehicle.cylinders = int(request.form['cylinders'])
+            vehicle.transmission = request.form['transmission']
+            vehicle.co2_rating = int(request.form['co2_rating'])
+            vehicle.smog_rating = int(request.form['smog_rating'])
+
+            vehicle_manager.edit_vehicle(vehicle_id, vehicle)
+            flash('You did great job its Updated', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'Error: {e}', 'danger')
+
+    return render_template('vehicle_form.html', vehicle=vehicle)
 
 
-@app.route('/save')
-def save_data():
-    """
-    Saves the in-memory vehicle data to a new CSV file.
-    """
-    vehicle_manager.save_data('data/New.csv')
-    flash('Data saved successfully!')
+@app.route('/delete_vehicle/<int:vehicle_id>', methods=['GET'])
+def delete_vehicle(vehicle_id):
+    try:
+        vehicle_manager.delete_vehicle(vehicle_id)
+        flash('Vehicle is deleted now 😒', 'success')
+    except Exception as e:
+        flash(f'Its an error yo! {e}', 'danger')
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

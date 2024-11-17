@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex justify-center items-center">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl overflow-auto">
+        <h1 class="text-3xl font-semibold text-center mb-6">Adding the Vehicle</h1>
+        
+        <form method="POST" action="{{ url_for('add_vehicle') }}" class="">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="model_year" class="block text-sm font-medium text-gray-700">Model Year</label>
+                    <input type="text" name="model_year" id="model_year" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="make" class="block text-sm font-medium text-gray-700">Make</label>
+                    <input type="text" name="make" id="make" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Model and Vehicle Class in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
+                    <input type="text" name="model" id="model" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicle_class" class="block text-sm font-medium text-gray-700">Vehicle Class</label>
+                    <input type="text" name="vehicle_class" id="vehicle_class" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Engine Size and Fuel Type in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="engine_size" class="block text-sm font-medium text-gray-700">Engine Size</label>
+                    <input type="text" name="engine_size" id="engine_size" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="fuel_type" class="block text-sm font-medium text-gray-700">Fuel Type</label>
+                    <input type="text" name="fuel_type" id="fuel_type" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- City Consumption and Highway Consumption in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="city_consumption" class="block text-sm font-medium text-gray-700">City Consumption</label>
+                    <input type="text" name="city_consumption" id="city_consumption" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="highway_consumption" class="block text-sm font-medium text-gray-700">Highway Consumption</label>
+                    <input type="text" name="highway_consumption" id="highway_consumption" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Combined Consumption and CO2 Emissions in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="combined_consumption" class="block text-sm font-medium text-gray-700">Combined Consumption</label>
+                    <input type="text" name="combined_consumption" id="combined_consumption" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="co2_emissions" class="block text-sm font-medium text-gray-700">CO2 Emissions</label>
+                    <input type="text" name="co2_emissions" id="co2_emissions" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Cylinders and Transmission in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="cylinders" class="block text-sm font-medium text-gray-700">Cylinders</label>
+                    <input type="text" name="cylinders" id="cylinders" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="transmission" class="block text-sm font-medium text-gray-700">Transmission</label>
+                    <input type="text" name="transmission" id="transmission" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- CO2 Rating and Smog Rating in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="co2_rating" class="block text-sm font-medium text-gray-700">CO2 Rating</label>
+                    <input type="text" name="co2_rating" id="co2_rating" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="smog_rating" class="block text-sm font-medium text-gray-700">Smog Rating</label>
+                    <input type="text" name="smog_rating" id="smog_rating" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Centering the submit button -->
+            <div class="flex justify-center mt-4">
+                <button type="submit" class="w-3/4 bg-indigo-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ action }} Vehicle</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

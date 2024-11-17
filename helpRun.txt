@@ -1,6 +1,7 @@
 Code written By Prabjot Singh (041102644)
 This program follows flask web framework.
 
+Run the Sql file before Running the project
 
 This is used to run it on virtual environment
 (make sure you are in project directory).
@@ -9,8 +10,6 @@ This is used to run it on virtual environment
 pyhton -m venv .venv
 source .venv/Script/activate
 pip install flask
-
-
 
 
 NOTE:

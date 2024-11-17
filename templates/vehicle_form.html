@@ -1,84 +1,120 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ action }} Vehicle</h2>
-    <form method="post" style="max-width: 1000px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); overflow-y: auto; max-height: 80vh;">
+<div class="flex justify-center items-center">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl overflow-auto">
+        <h1 class="text-3xl font-semibold text-center mb-6">Editing the Vehicle</h1>
+        
+        <form method="POST" action="{{ url_for('edit_vehicle', vehicle_id=vehicle.id) }}" class="">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="model_year" class="block text-sm font-medium text-gray-700">Model Year</label>
+                    <input type="text" name="model_year" id="model_year" required 
+                           value="{{ vehicle.model_year }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-            <div style="flex: 1; min-width: 250px;">
-                <label for="model_year">Model Year:</label>
-                <input type="text" name="model_year" id="model_year" value="{{ vehicle.model_year if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="make" class="block text-sm font-medium text-gray-700">Make</label>
+                    <input type="text" name="make" id="make" required 
+                           value="{{ vehicle.make }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="make">Make:</label>
-                <input type="text" name="make" id="make" value="{{ vehicle.make if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Model and Vehicle Class in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
+                    <input type="text" name="model" id="model" required 
+                           value="{{ vehicle.model }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicle_class" class="block text-sm font-medium text-gray-700">Vehicle Class</label>
+                    <input type="text" name="vehicle_class" id="vehicle_class" required 
+                           value="{{ vehicle.vehicle_class }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="model">Model:</label>
-                <input type="text" name="model" id="model" value="{{ vehicle.model if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Engine Size and Fuel Type in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="engine_size" class="block text-sm font-medium text-gray-700">Engine Size</label>
+                    <input type="text" name="engine_size" id="engine_size" required 
+                           value="{{ vehicle.engine_size }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="fuel_type" class="block text-sm font-medium text-gray-700">Fuel Type</label>
+                    <input type="text" name="fuel_type" id="fuel_type" required 
+                           value="{{ vehicle.fuel_type }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="vehicle_class">Vehicle Class:</label>
-                <input type="text" name="vehicle_class" id="vehicle_class" value="{{ vehicle.vehicle_class if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- City Consumption and Highway Consumption in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="city_consumption" class="block text-sm font-medium text-gray-700">City Consumption</label>
+                    <input type="text" name="city_consumption" id="city_consumption" required 
+                           value="{{ vehicle.city_consumption }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="highway_consumption" class="block text-sm font-medium text-gray-700">Highway Consumption</label>
+                    <input type="text" name="highway_consumption" id="highway_consumption" required 
+                           value="{{ vehicle.highway_consumption }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="engine_size">Engine Size (L):</label>
-                <input type="text" name="engine_size" id="engine_size" value="{{ vehicle.engine_size if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Combined Consumption and CO2 Emissions in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="combined_consumption" class="block text-sm font-medium text-gray-700">Combined Consumption</label>
+                    <input type="text" name="combined_consumption" id="combined_consumption" required 
+                           value="{{ vehicle.combined_consumption }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="co2_emissions" class="block text-sm font-medium text-gray-700">CO2 Emissions</label>
+                    <input type="text" name="co2_emissions" id="co2_emissions" required 
+                           value="{{ vehicle.co2_emissions }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="cylinders">Cylinders:</label>
-                <input type="text" name="cylinders" id="cylinders" value="{{ vehicle.cylinders if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Cylinders and Transmission in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="cylinders" class="block text-sm font-medium text-gray-700">Cylinders</label>
+                    <input type="text" name="cylinders" id="cylinders" required 
+                           value="{{ vehicle.cylinders }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="transmission" class="block text-sm font-medium text-gray-700">Transmission</label>
+                    <input type="text" name="transmission" id="transmission" required 
+                           value="{{ vehicle.transmission }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="transmission">Transmission:</label>
-                <input type="text" name="transmission" id="transmission" value="{{ vehicle.transmission if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- CO2 Rating and Smog Rating in one row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="co2_rating" class="block text-sm font-medium text-gray-700">CO2 Rating</label>
+                    <input type="text" name="co2_rating" id="co2_rating" required 
+                           value="{{ vehicle.co2_rating }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div class="form-group">
+                    <label for="smog_rating" class="block text-sm font-medium text-gray-700">Smog Rating</label>
+                    <input type="text" name="smog_rating" id="smog_rating" required 
+                           value="{{ vehicle.smog_rating }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
             </div>
 
-            <div style="flex: 1; min-width: 250px;">
-                <label for="fuel_type">Fuel Type:</label>
-                <input type="text" name="fuel_type" id="fuel_type" value="{{ vehicle.fuel_type if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Centering the submit button -->
+            <div class="flex justify-center mt-4">
+                <button type="submit" class="w-3/4 bg-indigo-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save Changes</button>
             </div>
-
-            <div style="flex: 1; min-width: 250px;">
-                <label for="city_consumption">City Consumption (L/100 km):</label>
-                <input type="text" name="city_consumption" id="city_consumption" value="{{ vehicle.city_consumption if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-
-            <div style="flex: 1; min-width: 250px;">
-                <label for="highway_consumption">Highway Consumption (L/100 km):</label>
-                <input type="text" name="highway_consumption" id="highway_consumption" value="{{ vehicle.highway_consumption if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-
-            <div style="flex: 1; min-width: 250px;">
-                <label for="combined_consumption">Combined Consumption (L/100 km):</label>
-                <input type="text" name="combined_consumption" id="combined_consumption" value="{{ vehicle.combined_consumption if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-
-            <div style="flex: 1; min-width: 250px;">
-                <label for="co2_emissions">CO2 Emissions (g/km):</label>
-                <input type="text" name="co2_emissions" id="co2_emissions" value="{{ vehicle.co2_emissions if vehicle else '' }}" required 
-                    style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-        </div>
-
-        <button type="submit" style="padding: 10px 15px; background-color: #35424a; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 20px;">{{ action }}</button>
-    </form>
-    <a href="{{ url_for('index') }}" style="display: block; margin-top: 20px; color: #35424a; text-decoration: none;">Back to Home</a>
+        </form>
+    </div>
+</div>
 {% endblock %}
