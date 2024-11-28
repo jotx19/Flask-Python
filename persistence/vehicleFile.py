@@ -1,12 +1,9 @@
-# Author: Prabjot Singh
-# This file contains the VehecleFile to import csv and insert into method in vehicle manager.
-
 import csv
 from models.vehicle import Vehicle
 from data.db import DB
 
 class VehicleDBIO:
-    """Initialising the values  here"""
+    """Initialising the values here"""
     def __init__(self, db_host, db_user, db_password, db_name="vehicles"):
         self.db_host = db_host
         self.db_user = db_user
@@ -14,7 +11,7 @@ class VehicleDBIO:
         self.db_name = db_name
 
     def convert_value(self, value, target_type):
-        """Convert the value to the appropriate type. Typecasting happenig here"""
+        """Convert the value to the appropriate type. Typecasting happening here"""
         if value == "" or value is None:
             return None
         try:
@@ -31,7 +28,7 @@ class VehicleDBIO:
 
     def load_csv_to_db(self, csv_file_path):
         """Load vehicle data from a CSV file into the database."""
-        with open(csv_file_path, newline='') as csvfile:
+        with open(csv_file_path, newline='', encoding='ISO-8859-1') as csvfile:
             reader = csv.DictReader(csvfile)  
             with DB(self.db_host, self.db_user, self.db_password, self.db_name) as connection:
                 for row in reader:
@@ -55,4 +52,4 @@ class VehicleDBIO:
                         connection.add_vehicle(vehicle)
                     except Exception as e:
                         print(f"Error inserting vehicle data: {e}")
-                        continue 
+                        continue

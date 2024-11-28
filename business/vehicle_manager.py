@@ -4,7 +4,7 @@ from data.db import DB
 class VehicleManager:
     """
     Manages vehicle records in a MySQL database, including operations like loading,
-    adding, editing, deleting, and saving vehicle data.
+    adding, editing, deleting, saving vehicle data, and searching across multiple columns.
     """
 
     def __init__(self, db_host, db_user, db_password, db_name="vehicles"):
@@ -65,10 +65,31 @@ class VehicleManager:
             smog_rating=row['smog_rating']
         )
 
+    def search_vehicles(self, make=None, model=None, year=None, fuel_type=None):
+        """Searches for vehicles based on multiple columns."""
+        query = "SELECT * FROM vehicles WHERE 1=1"
+        params = []
+
+        if make:
+            query += " AND make = %s"
+            params.append(make)
+        if model:
+            query += " AND model = %s"
+            params.append(model)
+        if year:
+            query += " AND year = %s"
+            params.append(year)
+        if fuel_type:
+            query += " AND fuel_type = %s"
+            params.append(fuel_type)
+
+        results = self._fetch_results(query, params)
+
+        # Create vehicle objects from the results
+        return [self._create_vehicle_from_row(row) for row in results]
+
     def add_vehicle(self, vehicle):
-        """
-        Adds a new vehicle to the database if it doesn't already exist.
-        """
+        """Adds a new vehicle to the database if it doesn't already exist."""
         # Check if the vehicle already exists
         check_query = """
         SELECT COUNT(*) FROM vehicles WHERE make = %s AND model = %s AND year = %s
@@ -96,12 +117,12 @@ class VehicleManager:
             int(vehicle.cylinders), 
             vehicle.transmission,  
             vehicle.fuel_type,
-            float(vehicle.city_consumption),  # Ensure city_consumption is a float
-            float(vehicle.highway_consumption),  # Ensure highway_consumption is a float
-            float(vehicle.combined_consumption),  # Ensure combined_consumption is a float
-            int(vehicle.co2_emissions),  # Ensure co2_emissions is an integer
-            int(vehicle.co2_rating),  # Ensure co2_rating is an integer (was previously a string)
-            int(vehicle.smog_rating)  # Ensure smog_rating is an integer
+            float(vehicle.city_consumption),  
+            float(vehicle.highway_consumption),  
+            float(vehicle.combined_consumption),  
+            int(vehicle.co2_emissions),  
+            int(vehicle.co2_rating),  
+            int(vehicle.smog_rating)  
         )
 
         try:
@@ -111,16 +132,12 @@ class VehicleManager:
             print(f"Error adding vehicle: {e}")
 
     def edit_vehicle(self, vehicle_id, vehicle):
-        """
-        Updates an existing vehicle record in the database.
-        """
-        # First, fetch the vehicle by its ID
+        """Updates an existing vehicle record in the database."""
         query = "SELECT * FROM vehicles WHERE id = %s"
         result = self._fetch_results(query, (vehicle_id,))
         if not result:
             raise ValueError(f"Vehicle with ID {vehicle_id} not found.")
         
-        # Now, update the vehicle data
         update_query = """
         UPDATE vehicles
         SET year = %s, make = %s, model = %s, v_class = %s, engine_size = %s, cylinders = %s,
@@ -153,13 +170,10 @@ class VehicleManager:
         self.db.close_connection()
 
     def get_vehicle_by_id(self, vehicle_id):
-        """
-        Fetches a vehicle by its ID from the database.
-        """
+        """Fetches a vehicle by its ID from the database."""
         query = "SELECT * FROM vehicles WHERE id = %s"
         result = self._fetch_results(query, (vehicle_id,))
         
         if result:
-            # Return a Vehicle object
             return self._create_vehicle_from_row(result[0])
         return None  # Return None if not found

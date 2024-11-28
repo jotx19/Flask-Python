@@ -11,8 +11,22 @@ from models.vehicle import Vehicle
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  
 
-vehicle_manager = VehicleManager("localhost", "root", "root", "vehicles")
-vehicle_dbio = VehicleDBIO("localhost", "root", "root", "vehicles")
+vehicle_manager = VehicleManager("localhost", "root", "prabjotpwd", "vehicles")
+vehicle_dbio = VehicleDBIO("localhost", "root", "prabjotpwd", "vehicles")
+
+@app.route('/search', methods=['GET', 'POST'])
+def search_vehicles():
+    if request.method == 'POST':
+        make = request.form.get('make')
+        model = request.form.get('model')
+        year = request.form.get('year')
+        fuel_type = request.form.get('fuel_type')
+
+        vehicles = vehicle_manager.search_vehicles(make, model, year, fuel_type)
+        return render_template('index.html', vehicles=vehicles)
+
+    return render_template('search_form.html')
+
 
 @app.route('/')
 def index():
